@@ -5,7 +5,7 @@
 
 void bubbleSort(int arr[], int size);
 void selectionSort(int arr[], int size);
-void mergeSort(int arr[]);
+void mergeSort(int arr[], int left, int right, int arrFinal[]);
 
 
 int main() {
@@ -19,6 +19,8 @@ int main() {
     
     int test[] = {4, 12, 6, 50, 2, 1, 90, 40, 17, 4};
     selectionSort(test, sizeof(test) / sizeof(test[0]));
+    bubbleSort(test, sizeof(test) / sizeof(test[0]));
+    mergeSort(test, 0, sizeof(test) / sizeof(test[0]-1));
 
     for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
         std::cout << "Index " << i << ": " << test[i] << std::endl;
@@ -70,6 +72,17 @@ void selectionSort(int arr[], int size) {
 }
 
 
-void mergeSort(int arr[], int left, int mid, int right) {
+void mergeSort(int arr[], int left, int right, int arrFinal[]) {
+    int mid;
+    if (right > left) {
+        mid = (left + right) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid+1, right);
+    }
+}
 
+void merge(int arr[]. int left, int mid, int right, int arrFinal[]) {
+    for (int i = left; i < right; i++) {
+        
+    }
 }
