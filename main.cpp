@@ -2,21 +2,28 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>
+#include <string>
 
 void bubbleSort(int arr[], int size);
 void selectionSort(int arr[], int size);
 void mergeSort(int arr[], int left, int right);
 void merge(int arr[], int left, int mid, int right);
+void genRandDataFile(std::string fileName, int numGenerate, int numRange);
+int * readData(std::string fileName, int size);
 
 int main() {
-    clock_t start = clock();
+    const int SIZE1 = 1000, SIZE2 = 10000, SIZE3 = 100000;
+    const int RAND_RANGE = 100000;
+    //clock_t start = clock();
+    //int dataArray[SIZE1];
+    int* dataArray;
+    genRandDataFile("randomData100000.txt", SIZE3, RAND_RANGE);
+    dataArray = readData("randomData100000.txt", SIZE3);
+    //readData("randomData1000.txt", dataArray[SIZE1]);
+    std::cout << "Size of array: " << sizeof(dataArray) / sizeof(dataArray[0]) << std::endl;
 
     srand(time(0));
-    int SIZE = 100, RAND_RANGE = 100000;
-    int dataArray[SIZE];
-    for (int i = 0; i < sizeof(dataArray)/ sizeof(dataArray[0]); i++) {
-        dataArray[i] = rand() % RAND_RANGE;
-    }
+    
     
     int test[] = {4, 12, 6, 50, 2, 1, 90, 40, 17, 4};
     //selectionSort(test, sizeof(test) / sizeof(test[0]));
@@ -92,7 +99,7 @@ void mergeSort(int arr[], int left, int right) {
 }
 
 void merge(int arr[], int left, int mid, int right) {
-    static int numCompare = 0;
+    static int numCompare = 0, numSwap = 0;
     int subArrSize1 = mid - left + 1, subArrSize2 = right - mid;
     int indexSubArr1 = 0, indexSubArr2 = 0, indexMerged = left;
     int leftArr[subArrSize1], rightArr[subArrSize2];
@@ -116,6 +123,7 @@ void merge(int arr[], int left, int mid, int right) {
         }
         indexMerged++;
         numCompare++;
+        numSwap++;
     }
 
     // Adds remaining in left subArr
@@ -123,6 +131,7 @@ void merge(int arr[], int left, int mid, int right) {
         arr[indexMerged] = leftArr[indexSubArr1];
         indexMerged++;
         indexSubArr1++;
+        numSwap++;
     }
 
     // Adds remaining in right subArr
@@ -130,5 +139,31 @@ void merge(int arr[], int left, int mid, int right) {
         arr[indexMerged] = rightArr[indexSubArr2];
         indexMerged++;
         indexSubArr2++;
+        numSwap++;
     }
+}
+
+void genRandDataFile(std::string fileName, int numGenerate, int numRange) {
+    std::ofstream ranDataFile;
+    ranDataFile.open(fileName);
+
+    for (int i = 0; i < numGenerate; i++) {
+        ranDataFile << rand() % numRange << std::endl;
+    }
+    ranDataFile.close();
+}
+
+int * readData(std::string fileName, int size) {
+    std::ifstream readFile;
+    readFile.open(fileName);
+    int tempInt, i = 0;
+    int arr[size];
+
+    while (readFile >> arr[i]) {
+        //arr[i] = tempInt;
+        //std::cout << "Value in temp " << i << ": "<< arr[i] << std::endl;
+        i++;
+    }
+
+    return arr;
 }
