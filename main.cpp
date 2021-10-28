@@ -4,40 +4,60 @@
 #include <fstream>
 #include <string>
 
+#include "sorts.h"
+
 void bubbleSort(int arr[], int size);
 void selectionSort(int arr[], int size);
 void mergeSort(int arr[], int left, int right);
 void merge(int arr[], int left, int mid, int right);
 void genRandDataFile(std::string fileName, int numGenerate, int numRange);
-int * readData(std::string fileName, int size);
 
 int main() {
+    srand(time(0));
     const int SIZE1 = 1000, SIZE2 = 10000, SIZE3 = 100000;
     const int RAND_RANGE = 100000;
-    //clock_t start = clock();
-    //int dataArray[SIZE1];
-    int* dataArray;
-    genRandDataFile("randomData100000.txt", SIZE3, RAND_RANGE);
-    dataArray = readData("randomData100000.txt", SIZE3);
-    //readData("randomData1000.txt", dataArray[SIZE1]);
-    std::cout << "Size of array: " << sizeof(dataArray) / sizeof(dataArray[0]) << std::endl;
+    int numArray1[SIZE1], numArray2[SIZE2], numArray3[SIZE3];
+    Sorts sortAlgorithms;
 
-    srand(time(0));
-    
-    
-    int test[] = {4, 12, 6, 50, 2, 1, 90, 40, 17, 4};
-    //selectionSort(test, sizeof(test) / sizeof(test[0]));
+    //genRandDataFile("randomData100000.txt", SIZE3, RAND_RANGE);
+
+    std::ifstream readFile;
+    readFile.open("randomData1000.txt");
+    int j = 0;
+    while (readFile >> numArray1[j]) { j++; }
+    readFile.close();
+    j = 0;
+    readFile.open("randomData10000.txt");
+    while (readFile >> numArray2[j]) { j++;}
+    readFile.close();
+    j = 0;
+    readFile.open("randomData100000.txt");
+    while (readFile >> numArray3[j]) { j++; }
+    readFile.close();
+
+    clock_t start = clock();
+    sortAlgorithms.bubbleSort(numArray1, sizeof(numArray1) / sizeof(numArray1[0]));
+    clock_t bubbleUnsorted1000 = clock();
+    sortAlgorithms.bubbleSort(numArray1, sizeof(numArray1) / sizeof(numArray1[0]));
+    clock_t bubbleSorted1000 = clock();
+    sortAlgorithms.bubbleSort(numArray2, sizeof(numArray2) / sizeof(numArray2[0]));
+    clock_t bubbleUnsorted10000 = clock();
+    sortAlgorithms.bubbleSort(numArray2, sizeof(numArray2) / sizeof(numArray2[0]));
+    clock_t bubbleSorted10000 = clock();
+    //bubbleSort(numArray3, sizeof(numArray3) / sizeof(numArray3[0]));
+    //clock_t bubbleSorted100000 = clock();
+    //bubbleSort(numArray3, sizeof(numArray3) / sizeof(numArray3[0]));
+    //clock_t bubbleUnsorted100000 = clock();
+
+    std::cout << "Time taken for unsorted bubble1000: " << bubbleUnsorted1000 - start << std::endl;
+    std::cout << "Time taken for sorted bubble1000: " << bubbleSorted1000 - bubbleUnsorted1000 << std::endl;
+    std::cout << "Time taken for unsorted bubble10000: " << bubbleUnsorted10000 - bubbleSorted1000 << std::endl;
+    std::cout << "Time taken for sorted bubble10000: " << bubbleSorted10000 - bubbleUnsorted10000 << std::endl;
+
+
+    //selectionSort(dataArray, sizeof(dataArray) / sizeof(dataArray[0]));
     //bubbleSort(dataArray, sizeof(dataArray) / sizeof(dataArray[0]));
-    mergeSort(dataArray, 0, sizeof(dataArray) / sizeof(dataArray[0]));
-    
-    /*
-    for (int i = 0; i < sizeof(test)/sizeof(test[0]); i++) {
-        std::cout << "Index " << i << ": " << test[i] << std::endl;
-    }*/
-
-    for (int i = 0; i < sizeof(dataArray)/sizeof(dataArray[0]); i++) {
-        std::cout << "Index " << i << ": " << dataArray[i] << std::endl;
-    }
+    //mergeSort(dataArray, 0, sizeof(dataArray) / sizeof(dataArray[0]));
 
     return 0;
 }
@@ -153,7 +173,8 @@ void genRandDataFile(std::string fileName, int numGenerate, int numRange) {
     ranDataFile.close();
 }
 
-int * readData(std::string fileName, int size) {
+/*
+void readData(std::string fileName, int size) {
     std::ifstream readFile;
     readFile.open(fileName);
     int tempInt, i = 0;
@@ -166,4 +187,4 @@ int * readData(std::string fileName, int size) {
     }
 
     return arr;
-}
+}*/
